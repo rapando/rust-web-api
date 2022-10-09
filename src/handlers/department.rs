@@ -1,5 +1,5 @@
-use serde::Serialize;
 use actix_web::{HttpResponse, Responder};
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct DepartmentResponse {
@@ -7,5 +7,9 @@ pub struct DepartmentResponse {
 }
 
 pub async fn get() -> impl Responder {
-HttpResponse::Ok().json(DepartmentResponse{status: "ok"})
+    let res = DepartmentResponse {
+        status: String::from("ok"),
+    };
+
+    HttpResponse::Ok().json(res)
 }

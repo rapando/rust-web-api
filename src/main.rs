@@ -23,8 +23,12 @@ async fn main() -> std::io::Result<()> {
     let app_data = web::Data::new(AppState { pool: db_pool });
 
     info!("starting api on port {}", port);
-    HttpServer::new(move || App::new().app_data(app_data.clone()))
-        .bind((host, port))?
-        .run()
-        .await
+    HttpServer::new(move || {
+        App::new()
+            .app_data(app_data.clone())
+            .route("/departments", web::get().to(handlers::department::get))
+    })
+    .bind((host, port))?
+    .run()
+    .await
 }
