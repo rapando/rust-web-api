@@ -1,4 +1,4 @@
-use actix_web::{web, App, HttpServer};
+use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use log::info;
 
@@ -26,9 +26,13 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(app_data.clone())
-            .route("/departments", web::get().to(handlers::department::get))
+            .route("/", web::get().to(handlers::home::get))
+            .route("/departments", web::post().to(handlers::department::create))
+            .route("/departments", web::get().to(handlers::department::get_all))
+            .route("/departments/{id:[0-9]+$}", web::get().to(handlers::department::get_one))
+            .route("/departments/{id:[0-9]+$}", web::put().to(handlers::department::update))
     })
-    .bind((host, port))?
-    .run()
-    .await
+        .bind((host, port))?
+        .run()
+        .await
 }

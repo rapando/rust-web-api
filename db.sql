@@ -3,7 +3,7 @@ use `rust_web_api`;
 
 create table if not exists `department` (
     `id` int primary key auto_increment,
-    `name` varchar(50) not null,
+    `name` varchar(50) not null unique,
     `staff_count` int unsigned not null default '0',
     `created` datetime not null default current_timestamp,
     `modified` datetime not null default current_timestamp on update current_timestamp

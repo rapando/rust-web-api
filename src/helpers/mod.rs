@@ -1,12 +1,13 @@
-use argon2rs::verifier::Encoded;
-use argon2rs::{
-    defaults::{KIB, LANES, PASSES},
-    Argon2, Variant,
-};
 use core::panic;
-use mysql::*;
-use rand::{thread_rng, Rng};
 use std::env;
+
+use argon2rs::{
+    Argon2,
+    defaults::{KIB, LANES, PASSES}, Variant,
+};
+use argon2rs::verifier::Encoded;
+use mysql::*;
+use rand::{Rng, thread_rng};
 
 /// read_env returns the value of a dotenv variable.
 /// in case the variable is not set, the application panics.
@@ -76,7 +77,7 @@ pub fn hash_password(clear_text: &String) -> (String, String) {
         b"",
         b"",
     )
-    .to_u8();
+        .to_u8();
     let password_hash = String::from_utf8(data_hash).unwrap();
 
     (random_salt, password_hash)
@@ -98,7 +99,7 @@ pub fn verify_hash(clear_text: String, password_hash: String, stored_salt: Strin
         b"",
         b"",
     )
-    .to_u8();
+        .to_u8();
     let hashed = String::from_utf8(data_hash).unwrap();
     hashed.eq(&password_hash)
 }
