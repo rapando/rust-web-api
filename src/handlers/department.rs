@@ -1,5 +1,5 @@
 use actix_web::{HttpResponse, Responder, web};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
 use crate::{AppState, models};
 use crate::handlers::Response;
@@ -10,20 +10,11 @@ pub struct CreateDepartmentRequest {
     staff_count: Option<u16>,
 }
 
-#[derive(Serialize)]
-pub struct CreateDepartmentResponse {
-    id: u64,
-    success: bool,
-    message: String,
-}
-
 pub async fn create(req: web::Json<CreateDepartmentRequest>, data: web::Data<AppState>) -> impl Responder {
     let mut conn = data.pool.get_conn().expect("failed to get a connection pool");
-    let staff_count:u16 = 0;
+    let staff_count: u16 = 0;
     match models::department::create(&req.name, staff_count, &mut conn) {
-        Ok(id) => HttpResponse::Created().json(CreateDepartmentResponse {
-            id,
-            success: true,
+        Ok(_) => HttpResponse::Created().json(Response {
             message: String::from("department created"),
         }),
         Err(_) => HttpResponse::BadRequest().json(Response {
@@ -60,8 +51,8 @@ pub async fn update(req: web::Json<CreateDepartmentRequest>, data: web::Data<App
     let staff_count = match req.staff_count {
         Some(c) => c,
         None => {
-            return HttpResponse::BadRequest().json(Response{
-                message:String::from( "staff_count is required"),
+            return HttpResponse::BadRequest().json(Response {
+                message: String::from("staff_count is required"),
             });
         }
     };

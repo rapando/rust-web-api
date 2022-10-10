@@ -83,23 +83,24 @@ pub fn hash_password(clear_text: &String) -> (String, String) {
     (random_salt, password_hash)
 }
 
-pub fn verify_hash(clear_text: String, password_hash: String, stored_salt: String) -> bool {
-    let salt = read_env("SALT");
-
-    let a2 = Argon2::new(PASSES, LANES, KIB, Variant::Argon2d).unwrap();
-    let random_salt_hash =
-        Encoded::new(a2, stored_salt.as_bytes(), salt.as_bytes(), b"", b"").to_u8();
-    let random_salt_hash_storable_encoding = String::from_utf8(random_salt_hash).unwrap();
-
-    let a2 = Argon2::new(PASSES, LANES, KIB, Variant::Argon2d).unwrap();
-    let data_hash = Encoded::new(
-        a2,
-        clear_text.as_bytes(),
-        random_salt_hash_storable_encoding.as_bytes(),
-        b"",
-        b"",
-    )
-        .to_u8();
-    let hashed = String::from_utf8(data_hash).unwrap();
-    hashed.eq(&password_hash)
-}
+// pub fn verify_hash(clear_text: String, password_hash: String, stored_salt: String) -> bool {
+//     let salt = read_env("SALT");
+//
+//     let a2 = Argon2::new(PASSES, LANES, KIB, Variant::Argon2d).unwrap();
+//     let random_salt_hash =
+//         Encoded::new(a2, stored_salt.as_bytes(), salt.as_bytes(), b"", b"").to_u8();
+//     let random_salt_hash_storable_encoding = String::from_utf8(random_salt_hash).unwrap();
+//
+//     let a2 = Argon2::new(PASSES, LANES, KIB, Variant::Argon2d).unwrap();
+//     let data_hash = Encoded::new(
+//         a2,
+//         clear_text.as_bytes(),
+//         random_salt_hash_storable_encoding.as_bytes(),
+//         b"",
+//         b"",
+//     )
+//         .to_u8();
+//     let hashed = String::from_utf8(data_hash).unwrap();
+//     hashed.eq(&password_hash)
+// }
+//

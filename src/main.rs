@@ -31,6 +31,11 @@ async fn main() -> std::io::Result<()> {
             .route("/departments", web::get().to(handlers::department::get_all))
             .route("/departments/{id:[0-9]+$}", web::get().to(handlers::department::get_one))
             .route("/departments/{id:[0-9]+$}", web::put().to(handlers::department::update))
+
+            .route("/users", web::post().to(handlers::user::create))
+            .route("/users", web::get().to(handlers::user::create))
+            .route("/users/{id:[0-9]+$}", web::get().to(handlers::user::get_one))
+            .route("/users/{id:[0-9]+$}", web::get().to(handlers::user::update))
     })
         .bind((host, port))?
         .run()
