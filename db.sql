@@ -13,6 +13,7 @@ create table if not exists `user` (
     `id` bigint primary key auto_increment,
     `first_name` varchar(20) not null,
     `last_name` varchar(20) not null,
+    `user_name` varchar(20) not null unique,
     `department_id` int,
     `salt` varchar(32) not null,
     `password` varchar(216) not null,
